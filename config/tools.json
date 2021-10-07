@@ -1,0 +1,7 @@
+{
+  "qmake": ["qmake", "make"],
+  "autotools": ["autogen.sh"],
+  "makefile": ["Makefile"],
+  "cargo": ["Cargo.toml"],
+  "cmake": ["CMakeLists.txt"]
+}
