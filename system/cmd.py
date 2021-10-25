@@ -21,3 +21,13 @@ def clone_or_pull_git(uri, destination):
     if status != CMD_OK:
         print("Invalid command return detected:", status)
         sys.exit(CMD_INVALID_RETURN)
+
+
+def exec_cmd(*args):
+    command = " ".join(args)
+    print("Executing:", command)
+    os.system(command)
+
+
+def create_make_cmd():
+    return ["make", f"-j{os.cpu_count()}"]

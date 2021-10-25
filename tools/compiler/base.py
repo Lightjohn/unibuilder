@@ -1,12 +1,18 @@
 class Base:
+
+    files = []
+
     def is_valid(self, local_files):
-        pass
+        for local_file in local_files:
+            if local_file in self.files:
+                return True
+        return False
 
     def init(self):
-        pass
+        print("STUB: Fake init")
 
     def compile(self):
-        pass
+        print("STUB: Fake compile")
 
     def install(self):
-        pass
+        print("STUB: Fake install")

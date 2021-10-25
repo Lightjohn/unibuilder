@@ -13,3 +13,6 @@ class Cargo(Base):
 
     def install(self):
         pass
+
+    def __str__(self):
+        return "Build system: Cargo / Rust"

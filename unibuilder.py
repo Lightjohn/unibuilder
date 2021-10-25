@@ -1,4 +1,5 @@
 import argparse
+import os
 import sys
 
 from config.settings import check_system_requirement
@@ -21,6 +22,7 @@ def parse_args():
     parser.add_argument('uri', help='can be a local path or a git url')
     parser.add_argument('-o', help='Destination, where should we output data', required=False, default=None)
     parser.add_argument('-y', help='Assume yes for any question', default=False)
+    parser.add_argument('-i', help='Install to system (will need sudo)', default=False)
     return parser.parse_args()
 
 
@@ -56,16 +58,33 @@ if __name__ == '__main__':
     print(pm)
 
     # Trying to detect uri build system
+    # listdir or walk?
+    local_files = os.listdir(destination)
 
     # order matter for compiling system: ie CMakeList can use another (qmake) so should be first
     ct = None
-    for compiling_tool in [Autotools, Cargo, Cmake, Go, Makefile, Qmake ]:
+    for compiling_tool in [Autotools, Cargo, Cmake, Go, Makefile, Qmake]:
         ct = compiling_tool()
-        if ct.is_valid(installed_binaries):
+        if ct.is_valid(local_files):
             break
     else:
-        print("Could not compilation tool used...")
+        print("Could not guess compilation tool used...")
         sys.exit(INVALID_BUILD_TOOLS)
     print(ct)
 
-    # Extracting details from README if any
+    # At this point we have system (pm) and build (tool)
+
+    # Extracting details from README if any to solve dependencies
+    os.chdir(destination)
+
+    # Start compilation
+    ct.init()
+    ct.compile()
+
+    # start install if asked
+    if args.i:
+        ct.install()
+
+    # Done
+
+

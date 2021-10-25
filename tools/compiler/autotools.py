@@ -1,15 +1,19 @@
+from system.cmd import exec_cmd, create_make_cmd
 from .base import Base
 
 
 class Autotools(Base):
-    def is_valid(self, local_files):
-        pass
+    files = ["autogen.sh"]
 
     def init(self):
-        pass
+        exec_cmd("sh", "autogen.sh")
+        exec_cmd("sh", "configure")
 
     def compile(self):
-        pass
+        exec_cmd(*create_make_cmd())
 
     def install(self):
         pass
+
+    def __str__(self):
+        return "Build system: Autotools"
